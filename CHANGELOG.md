@@ -1,0 +1,32 @@
+# Changelog
+
+Todas as mudanças da Ilha. O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e as versões seguem [SemVer](https://semver.org/lang/pt-BR/).
+
+## [0.1.0] - 2026-11-25
+
+Primeira versão.
+
+### IA
+- Acompanha o Claude Code (ganchos HTTP) e o Codex (ganchos de comando) ao vivo: o que leem, editam e rodam
+- Permitir, Sempre permitir, Negar e Aprovar plano direto na ilha
+- Anéis do limite de 5 h e da semana (Claude pela status line ou pela conta, Codex pelos arquivos de sessão)
+- Histórico com busca, tarefas de hoje e dias seguidos
+
+### Ilha
+- Barra recolhida, painel com abas, modo linha (botão direito) e cartões de aviso embaixo da ilha
+- Colada no topo (com as curvas ligando à borda da tela) ou flutuante; preta ou vidro colorido na cor da música; tamanho e transparência
+- O que aparece em repouso à esquerda e à direita; relógio automático, 12 h ou 24 h
+- Abre ao repousar o mouse ou ao clicar; atalho de teclado; some em tela cheia
+
+### Apps
+- Música (qualquer player do Windows) com letras sincronizadas
+- Bandeja de arquivos, área de transferência, nota, timer de foco, Guarda do Foco
+- Agenda por link iCal, clima, Wi‑Fi e Bluetooth, CPU/RAM/bateria, barra de volume
+- Até 4 atalhos para sites e programas
+
+### Avisos e sons
+- Por tipo: cartão, notificação do Windows ou desligado
+- Volume próprio e 4 pacotes de sons
+
+### Atualizações
+- Atualização automática pelo GitHub Releases, assinada, com progresso, que espera a IA terminar antes de instalar

@@ -1,0 +1,32 @@
+# Compiles and runs the tests on every push and pull request.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri -> target
+
+      - name: Check
+        working-directory: src-tauri
+        run: cargo check --locked
+
+      - name: Tests
+        working-directory: src-tauri
+        run: cargo test --locked

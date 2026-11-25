@@ -1,0 +1,54 @@
+# Builds the Windows installer, signs it for the updater and publishes a GitHub Release with latest.json.
+# Triggered by a version tag (v0.2.0…). Make one with scripts/release.ps1.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri -> target
+
+      - name: Install the Tauri CLI
+        run: npm ci
+
+      - name: Build, sign and publish
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # the updater's private key (repository secret); never in the code
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: 'Ilha ${{ github.ref_name }}'
+          releaseBody: |
+            Baixe **Ilha_*_x64-setup.exe** abaixo e abra para instalar.
+            Quem já tem a Ilha recebe esta versão sozinho (Configurações → Geral → Atualizações).
+
+            O que mudou: veja o [CHANGELOG](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md).
+          releaseDraft: false
+          prerelease: false
+          includeUpdaterJson: true

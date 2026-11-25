@@ -1,0 +1,14 @@
+# build output
+node_modules/
+src-tauri/target/
+src-tauri/gen/
+
+# local only
+.mock/
+.claude/
+*.local.*
+NOTAS-TWOCODE.md
+
+# never commit signing keys
+*.key
+*.key.pub
