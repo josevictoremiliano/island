@@ -2,6 +2,12 @@
 
 Todas as mudanças da Ilha. O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e as versões seguem [SemVer](https://semver.org/lang/pt-BR/).
 
+## [0.1.1] - 2026-11-25
+
+### Corrigido
+- Bandeja de arquivos: soltar arquivos na ilha não funcionava. A janela da ilha era criada escondida e ficava sem o receptor de arquivos do Tauri; agora ela já nasce visível e no lugar.
+- Durante um arrastar e soltar, a ilha não virava "clicável" a tempo: a rotina que segue o mouse esperava a thread principal, ocupada com o arraste. Agora ela fala direto com o Windows.
+
 ## [0.1.0] - 2026-11-25
 
 Primeira versão.

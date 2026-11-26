@@ -58,9 +58,22 @@ fn position_island(win: &WebviewWindow) {
 }
 
 fn create_island(app: &AppHandle) -> tauri::Result<()> {
+    // Created visible and already in place: Tauri installs its file drop receiver while the webview is created,
+    // and a window created hidden ended up without it (dropped files went to the webview and never reached the tray).
+    let (x, y) = app
+        .primary_monitor()
+        .ok()
+        .flatten()
+        .map(|m| {
+            let scale = m.scale_factor();
+            let (size, pos) = (m.size(), m.position());
+            (pos.x as f64 / scale + (size.width as f64 / scale - ISLAND_W) / 2.0, pos.y as f64 / scale)
+        })
+        .unwrap_or((0.0, 0.0));
     let win = WebviewWindowBuilder::new(app, "island", WebviewUrl::App("island.html".into()))
         .title("Ilha")
         .inner_size(ISLAND_W, ISLAND_H)
+        .position(x, y)
         .decorations(false)
         .transparent(true)
         .always_on_top(true)
@@ -68,10 +81,9 @@ fn create_island(app: &AppHandle) -> tauri::Result<()> {
         .resizable(false)
         .shadow(false)
         .focused(false)
-        .visible(false)
+        .visible(true)
         .additional_browser_args(BROWSER_ARGS)
         .build()?;
-    position_island(&win);
     let _ = win.set_ignore_cursor_events(true);
     // files dropped on the island go into the file tray
     let handle = app.clone();
