@@ -2,6 +2,17 @@
 
 Todas as mudanças da Ilha. O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e as versões seguem [SemVer](https://semver.org/lang/pt-BR/).
 
+## [0.1.3] - 2026-11-26
+
+### Corrigido
+- Ícones dos seus apps ficavam um pouco tortos: o Windows entrega o ícone dentro de um quadrado maior e fora do centro. Agora a ilha corta a borda vazia e centraliza o desenho.
+- As abas do painel agora ficam sempre no meio da ilha, mesmo desligando apps (como o timer de foco).
+- Repouso com "Nada" dos dois lados: a hora agora fica no centro da ilha, e não encostada num lado.
+- Tocando música, os anéis de uso da IA apareciam ao lado mesmo sem nenhuma IA rodando e sem "Uso da IA" escolhido no repouso. Agora só aparecem se a IA estiver trabalhando ou se você os escolheu.
+
+### Mudado
+- Sem nada para mostrar no repouso (nada, nada e sem hora), a ilha mostra dois olhinhos que piscam e olham em volta, em vez de um ponto.
+
 ## [0.1.2] - 2026-11-25
 
 ### Corrigido

@@ -139,11 +139,13 @@ function renderBar() {
     const left = slot(S.cfg.rest_left, now), right = slot(S.cfg.rest_right, now);
     const mid = S.cfg.rest_clock !== false && S.cfg.apps.clock !== false ? `<span class="clock">${clock(now)}</span>` : '';
     parts.push(left, mid, right);
-    if (!left && !mid && !right) parts.push(`<i class="dot" style="--c:#444"></i>`);
+    if (!left && !mid && !right) parts.push(`<span class="eyes"><i></i><i></i></span>`);
   }
   if (S?.cfg.apps.timer && timer.running) parts.push(`<span class="chip">⏱ ${fmtDur(timer.left())}</span>`);
-  // while something happens, the usage rings stay on the right (at rest they are a slot you choose)
-  if (S?.cfg.apps.usage && !resting) parts.push(usageChips());
+  // while the AI works, its usage rings stay on the right; otherwise (music, an event…) they only show
+  // if you chose them as a resting item
+  const wantUsage = s || S?.cfg.rest_left === 'usage' || S?.cfg.rest_right === 'usage';
+  if (S?.cfg.apps.usage && !resting && wantUsage) parts.push(usageChips());
   $('#bar').innerHTML = parts.filter(Boolean).join('');
   const glow = s && Date.now() >= testUntil ? (s.state === 'done' || s.state === 'error' ? color(s.state) : color(s.state)) : Date.now() < testUntil ? 'var(--done)' : 'transparent';
   island.style.setProperty('--glow', s || Date.now() < testUntil ? glow : 'transparent');
@@ -360,8 +362,36 @@ async function fetchLinkIcon(target) {
   LINK_ICONS.set(target, null);
   try {
     const url = await invoke('link_icon', { target });
-    if (url) { LINK_ICONS.set(target, url); renderLinks(); }
+    if (url) { LINK_ICONS.set(target, await centerIcon(url)); renderLinks(); }
   } catch {}
+}
+
+// Windows hands program icons inside a bigger, mostly empty square, often not in its middle, and some
+// favicons carry uneven margins: cut the empty border away and put the drawing in the middle of a square
+function centerIcon(url) {
+  return new Promise(done => {
+    const img = new Image();
+    img.onload = () => {
+      try {
+        const w = img.naturalWidth, h = img.naturalHeight;
+        if (!w || !h || w > 512 || h > 512) return done(url);
+        const c = document.createElement('canvas'); c.width = w; c.height = h;
+        const g = c.getContext('2d'); g.drawImage(img, 0, 0);
+        const a = g.getImageData(0, 0, w, h).data;
+        let x0 = w, y0 = h, x1 = -1, y1 = -1;
+        for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+          if (a[(y * w + x) * 4 + 3] > 16) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+        }
+        if (x1 < 0) return done(url);
+        const bw = x1 - x0 + 1, bh = y1 - y0 + 1, side = Math.max(bw, bh);
+        const o = document.createElement('canvas'); o.width = side; o.height = side;
+        o.getContext('2d').drawImage(c, x0, y0, bw, bh, (side - bw) / 2, (side - bh) / 2, bw, bh);
+        done(o.toDataURL('image/png'));
+      } catch { done(url); }
+    };
+    img.onerror = () => done(url);
+    img.src = url;
+  });
 }
 
 // ---------- lyrics ----------
