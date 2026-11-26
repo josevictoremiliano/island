@@ -2,6 +2,13 @@
 
 Todas as mudanças da Ilha. O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e as versões seguem [SemVer](https://semver.org/lang/pt-BR/).
 
+## [0.1.2] - 2026-11-25
+
+### Corrigido
+- Seus próprios apps agora aparecem na ilha com o ícone de verdade (o do programa ou do atalho, ou o do site) em vez da inicial.
+- Com apps adicionados, o cabeçalho da ilha não cabia: as abas cobriam a hora e a engrenagem das Configurações saía para fora. A ilha agora fica mais larga conforme a quantidade de apps.
+- Configurações → Apps: caminhos longos de programas faziam a linha sair da caixa.
+
 ## [0.1.1] - 2026-11-25
 
 ### Corrigido

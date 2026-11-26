@@ -18,6 +18,7 @@ A Ilha não tem conta, servidor próprio nem telemetria. Quase tudo acontece no 
 | Letras | lrclib.net | Título, artista e duração da música |
 | Clima | open-meteo.com | O nome da cidade que você digitou e as coordenadas dela |
 | Agenda | o endereço iCal que você colou | Um download da sua agenda |
+| Seus próprios apps (sites) | o próprio site que você adicionou | Um pedido da página inicial e do ícone dele, uma vez por execução, para mostrar o ícone na ilha |
 | Uso pela conta Claude (desligado por padrão) | api.anthropic.com | O login que o Claude Code guardou, só para perguntar quanto do limite você usou. Não é uma conversa com o modelo e não gasta tokens |
 
 Nada disso passa por um servidor da Ilha, porque não existe um.

@@ -41,7 +41,7 @@ svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width:
   box-shadow: inset 0 -18px 22px -16px color-mix(in srgb, var(--glow) 90%, transparent), 0 4px 14px rgb(0 0 0 / .45);
   transition: width .42s var(--ease), height .42s var(--ease), border-radius .42s var(--ease), box-shadow .5s;
 }
-#island.expanded { width: 560px; height: auto; border-radius: 0 0 30px 30px; }
+#island.expanded { width: calc(560px + var(--links-w, 0px)); height: auto; border-radius: 0 0 30px 30px; }
 
 /* ---------- look (Settings → Island) ---------- */
 /* size */
@@ -228,6 +228,7 @@ html[data-material] #island.tucked { background: transparent; box-shadow: none; 
   display: grid; place-items: center; border: 1px solid #24242a;
 }
 .links button:hover { background: #24242a; }
+.links img { width: 18px; height: 18px; object-fit: contain; pointer-events: none; }
 
 /* lyrics */
 .lyrics { margin-top: 10px; text-align: center; min-height: 0; }

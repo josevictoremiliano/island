@@ -344,8 +344,24 @@ function renderNet() {
 // ---------- your own sites and programs ----------
 function renderLinks() {
   const links = S?.cfg.apps.links ? (S.cfg.links || []) : [];
-  const html = links.map((l, i) => `<button data-link="${i}" title="${esc(l.name || l.target)}">${esc((l.name || l.target).replace(/^https?:\/\/(www\.)?/, '').charAt(0).toUpperCase())}</button>`).join('');
+  const html = links.map((l, i) => {
+    const icon = LINK_ICONS.get(l.target);
+    if (icon === undefined) fetchLinkIcon(l.target);
+    const letter = esc((l.name || l.target).replace(/^https?:\/\/(www\.)?/, '').charAt(0).toUpperCase());
+    return `<button data-link="${i}" title="${esc(l.name || l.target)}">${icon ? `<img src="${esc(icon)}" alt="">` : letter}</button>`;
+  }).join('');
   if ($('#links').innerHTML !== html) $('#links').innerHTML = html;
+  // the island grows with the links so the clock and the gear keep their room
+  $('#island').style.setProperty('--links-w', links.length ? links.length * 31 + 12 + 'px' : '0px');
+}
+// target -> data URL, or null when it has none (then the letter stays)
+const LINK_ICONS = new Map();
+async function fetchLinkIcon(target) {
+  LINK_ICONS.set(target, null);
+  try {
+    const url = await invoke('link_icon', { target });
+    if (url) { LINK_ICONS.set(target, url); renderLinks(); }
+  } catch {}
 }
 
 // ---------- lyrics ----------

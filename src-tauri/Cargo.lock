@@ -2057,6 +2057,7 @@ dependencies = [
  "chrono-tz",
  "dirs 6.0.0",
  "drag",
+ "png",
  "reqwest 0.12.28",
  "rrule",
  "serde",

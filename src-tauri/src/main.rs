@@ -34,7 +34,7 @@ use crate::{
     core::{Core, Rect, Snapshot},
 };
 
-const ISLAND_W: f64 = 720.0;
+const ISLAND_W: f64 = 760.0; // room for the widest island (4 own apps) plus the ears
 const ISLAND_H: f64 = 560.0;
 // every webview of the app must get the same arguments (WebView2 shares one environment)
 const BROWSER_ARGS: &str =
@@ -344,6 +344,11 @@ fn open_link(target: String) -> Result<(), String> {
 }
 
 #[tauri::command]
+async fn link_icon(target: String) -> Option<String> {
+    links::icon(&target).await
+}
+
+#[tauri::command]
 async fn pick_program(app: AppHandle) -> Option<String> {
     use tauri_plugin_dialog::DialogExt;
     tauri::async_runtime::spawn_blocking(move || {
@@ -505,6 +510,7 @@ fn main() {
             net_set,
             net_settings,
             open_link,
+            link_icon,
             pick_program,
             focus_timer,
             focus_snooze,
